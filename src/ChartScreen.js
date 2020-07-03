@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { LineChart } from "react-native-chart-kit";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { convertToPersianNumber } from '../generals/Functions';
+
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const chartConfig = {
@@ -48,10 +50,15 @@ export default class ChartScreen extends Component {
             yCoordinate: value.y
         })
     }
+    verticalLableFont(y) {
+        let yValue = y.toString();
+        return convertToPersianNumber(yValue)
+
+    }
 
     render() {
         return <View style={styles.container}>
-            <Text style={styles.lable}>Line chart with Persian lables</Text>
+            <Text style={styles.lable}>chart with Persian lables and tooltip</Text>
             <View >
                 <LineChart
                     data={this.state.chartData}
@@ -64,6 +71,7 @@ export default class ChartScreen extends Component {
                     withVerticalLabels={false}
                     withShadow={true}
                     fromZero={true}
+                    formatYLabel={(y) => this.verticalLableFont(y)}
                     withOuterLines={false}
                     bezier
                 >
@@ -75,7 +83,9 @@ export default class ChartScreen extends Component {
                     top: this.state.yCoordinate + wp('15%'),
                     left: this.state.xCoordinate,
                 }]}>
-                    <Text style={styles.pointContentText}>{this.state.pointContent}</Text>
+                    <Text style={styles.pointContentText}>
+                        {convertToPersianNumber(this.state.pointContent.toString())}
+                    </Text>
                 </View>}
 
         </View>
